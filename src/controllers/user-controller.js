@@ -1,13 +1,37 @@
 import { prisma } from "../helpers/utils.js";
 
-export const index = async (req, res) => {
+export const getByID = async (req, reply) => {
+  const { id } = req.params;
   try {
-    let users = await prisma.user.findMany({
-      select: { email: true },
+    const user = await prisma.user.findUnique({
+      where: {
+        id: +id,
+      },
+      select: { id: true, email: true, username: true, name: true },
     });
-    return res.send({ data: { users } });
+    return reply.send({ data: { user } });
   } catch (error) {
-    console.error("users", error);
-    res.status(500).send({ error: `Cannot fetch users` });
+    reply.status(500).send({ error: "Erro no server!" });
+  }
+};
+
+export const getByUsername = async (req, reply) => {
+  const { username } = req.query;
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        username,
+      },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        name: true,
+        createdAt: true,
+      },
+    });
+    return reply.send({ data: { user } });
+  } catch (error) {
+    reply.status(500).send({ error: "Erro no server!" });
   }
 };
