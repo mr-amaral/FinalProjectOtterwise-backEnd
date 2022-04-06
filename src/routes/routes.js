@@ -1,5 +1,6 @@
 import userRoutes from "./users-routes.js";
 import authRoutes from "./auth-routes.js";
+import petweetRoutes from "./petweets-routes.js";
 
 export const renderRoutes = [
   {
@@ -11,6 +12,7 @@ export const renderRoutes = [
   },
   ...Object.values(userRoutes),
   ...Object.values(authRoutes),
+  ...Object.values(petweetRoutes),
 ];
 
 export default (fastify, opts, next) => {
