@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 
 export const envs = {
   JWT_SECRET: process.env.JWT_SECRET || "secret123",
-  PORT: process.env.PORT || 3000,
+  PORT: process.env.PORT || 5000,
 };
 
 export const prisma = new PrismaClient();

@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,30 +10,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Profile {
+  id      Int      @id @default(autoincrement()) 
+  bio String?
+  avatar_url String?
+  conver_url String?
+  user User  @relation(fields: [user_id], references: [id])
+  user_id Int @unique
+}
+
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String    @db.VarChar(255)
-  email     String    @unique @db.VarChar(255)
-  username  String    @unique @db.VarChar(255)
-  password  String
-  createdAt DateTime  @default(now()) @db.Timestamp(6)
-  updatedAt DateTime
-  Petweet   Petweet[]
-  Profile   Profile?
+  id      Int      @id @default(autoincrement())
+  name    String  @db.VarChar(255)
+  email   String   @unique @db.VarChar(255)
+  username   String   @unique @db.VarChar(255)
+  password String
+  petweets Petweet[]
+  profile Profile?
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt
 }
 
 model Petweet {
-  id        Int      @id @default(autoincrement())
-  content   String   @db.VarChar(140)
-  user_id   Int
+  id      Int      @id @default(autoincrement())
+  content  String @db.VarChar(140)
+  user_id Int 
+  user User @relation(fields: [user_id], references: [id])
   createdAt DateTime @default(now()) @db.Timestamp(6)
-  updatedAt DateTime
-  User      User     @relation(fields: [user_id], references: [id])
+  updatedAt DateTime @updatedAt
 }
 
-model Profile {
-  id      Int     @id @default(autoincrement())
-  bio     String?
-  user_id Int     @unique
-  User    User    @relation(fields: [user_id], references: [id])
-}
